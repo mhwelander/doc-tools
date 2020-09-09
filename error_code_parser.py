@@ -49,7 +49,6 @@ for n in [
             bleh = re.sub(r"((?:message = )[^\]]+)", my_function, data)
             sf5.write(bleh)
 
-    notFirst = 0
     with open(n[0], "r") as fp:
 
         line = fp.readline()
@@ -58,10 +57,9 @@ for n in [
             strippedLine = line.strip()
             if strippedLine.startswith("code ="):
                 str1 = strippedLine.strip('",')
-                if notFirst > 0:
-                    print()
+                print()
                 print("|`" + str1.strip('code = "') + "`|", end="")
-                notFirst += 1
+
             if strippedLine.startswith("message ="):
                 str2 = strippedLine.strip(")]")
                 print(str2.strip("message ="), end="")
