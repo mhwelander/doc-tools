@@ -58,7 +58,7 @@ for n in [
             strippedLine = line.strip()
             if strippedLine.startswith("code ="):
                 str1 = strippedLine.strip('",')
-                if notFirst > 1:
+                if notFirst > 0:
                     print()
                 print("|`" + str1.strip('code = "') + "`|", end="")
                 notFirst += 1
