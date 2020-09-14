@@ -2,7 +2,7 @@ import re
 import requests
 
 
-def my_function(match):
+def removeSpaceAfterMessage(match):
     replaced = re.sub(r"\n", " ", match.group(1))
     replaced = re.sub(r"\"\\ ", '"', replaced)
     return replaced
@@ -46,8 +46,10 @@ for n in [
 
         with open(n[0], "w") as sf5:
 
-            bleh = re.sub(r"((?:message = )[^\]]+)", my_function, data)
-            sf5.write(bleh)
+            bleh = re.sub(r"((?:message = )[^\]]+)", removeSpaceAfterMessage, data)
+            blah = re.sub("\#\[user_facing\(code", "\#\[user_facing\(\ncode", bleh)
+            bloh = re.sub(", message \= ", ",\nmessage = ", blah)
+            sf5.write(bloh)
 
     with open(n[0], "r") as fp:
 
