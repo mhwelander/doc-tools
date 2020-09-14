@@ -36,7 +36,7 @@ for n in [
 
     print()
     print()
-    print("### " + n[1])
+    print("#### " + n[1])
     print()
     print("| **Error** | **Example message**| **Description** |")
     print("| :-------- | :--------- | :-------------- |")
@@ -49,7 +49,10 @@ for n in [
             bleh = re.sub(r"((?:message = )[^\]]+)", removeSpaceAfterMessage, data)
             blah = re.sub("\#\[user_facing\(code", "\#\[user_facing\(\ncode", bleh)
             bloh = re.sub(", message \= ", ",\nmessage = ", blah)
-            sf5.write(bloh)
+            blih = re.sub(
+                "\#\[user_facing\(message = ", "\#\[user_facing\(\nmessage = ", bloh
+            )
+            sf5.write(blih)
 
     with open(n[0], "r") as fp:
 
@@ -59,6 +62,7 @@ for n in [
             strippedLine = line.strip()
             if strippedLine.startswith("code ="):
                 str1 = strippedLine.strip('",')
+                str1 = str1.strip(")]")
                 print()
                 print("|`" + str1.strip('code = "') + "`|", end="")
 
