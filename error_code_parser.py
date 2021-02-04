@@ -38,8 +38,8 @@ for n in [
     print()
     print("#### " + n[1])
     print()
-    print("| **Error** | **Example message**| **Description** |")
-    print("| :-------- | :--------- | :-------------- |")
+    print("| **Error** | **Example message** |")
+    print("| :-------- | :------------------ |")
 
     with open(n[0], "r") as sf4:
         data = sf4.read()
@@ -67,8 +67,9 @@ for n in [
                 print("|`" + str1.strip('code = "') + "`|", end="")
 
             if strippedLine.startswith("message ="):
-                str2 = strippedLine.strip(")]")
-                print(str2.strip("message ="), end="")
+                str2 = strippedLine.strip(")]").strip("message =").rstrip("\"")
+                str2 = str2.replace('\\n', ' ')
+                print(str2, end=" \"")
                 print("<br />", end="")
 
             # print("Line {}: {}".format(cnt, line.strip()))
