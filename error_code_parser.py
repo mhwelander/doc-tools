@@ -74,7 +74,8 @@ for n in [
             if strippedLine.startswith("message ="):
                 str2 = strippedLine.strip(")]")
                 print();
-                print(str2.strip("message ="), end="")
+                str3 = str2.replace("\\n", "<br />")
+                print(str3.strip("message ="), end="")
                 print();
 
             # print("Line {}: {}".format(cnt, line.strip()))
