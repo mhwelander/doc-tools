@@ -28,18 +28,16 @@ open("introspection_engine.txt", "wb").write(r4.content)
 
 
 for n in [
-    ["query_engine.txt", "Query Engine"],
-    ["migration_engine.txt", "Migration Engine"],
-    ["common.txt", "Common"],
-    ["introspection_engine.txt", "Introspection Engine"],
+        ["common.txt", "Common"],
+    ["query_engine.txt", "Prisma Client (Query Engine)"],
+    ["migration_engine.txt", "Prisma Migrate (Migration Engine)"],
+    ["introspection_engine.txt", "<inlinecode>prisma db pull</inlinecode> (Introspection Engine)"],
 ]:
 
     print()
     print()
-    print("#### " + n[1])
+    print("### " + n[1])
     print()
-    print("| **Error** | **Example message**| **Description** |")
-    print("| :-------- | :--------- | :-------------- |")
 
     with open(n[0], "r") as sf4:
         data = sf4.read()
@@ -52,7 +50,12 @@ for n in [
             blih = re.sub(
                 "\#\[user_facing\(message = ", "\#\[user_facing\(\nmessage = ", bloh
             )
-            sf5.write(blih)
+
+            blup = re.sub("const ERROR_CODE: &'static str = ", "code =", blih)
+            blarp = re.sub("format!\(", "message = ", blup)
+            foop = re.sub("message = \n", "message =", blarp)
+
+            sf5.write(foop)
 
     with open(n[0], "r") as fp:
 
@@ -64,12 +67,14 @@ for n in [
                 str1 = strippedLine.strip('",')
                 str1 = str1.strip(")]")
                 print()
-                print("|`" + str1.strip('code = "') + "`|", end="")
+                print("#### <inlinecode>" + str1.strip('code = "') + "</inlinecode>", end="")                
+                print();
 
             if strippedLine.startswith("message ="):
                 str2 = strippedLine.strip(")]")
+                print();
                 print(str2.strip("message ="), end="")
-                print("<br />", end="")
+                print();
 
             # print("Line {}: {}".format(cnt, line.strip()))
             line = fp.readline()
