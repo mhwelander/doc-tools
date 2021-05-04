@@ -66,6 +66,7 @@ for n in [
             if strippedLine.startswith("code ="):
                 str1 = strippedLine.strip('",')
                 str1 = str1.strip(")]")
+                str1 = str1.strip('";')
                 print()
                 print("#### <inlinecode>" + str1.strip('code = "') + "</inlinecode>", end="")                
                 print();
