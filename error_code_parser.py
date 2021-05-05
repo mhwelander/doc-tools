@@ -74,7 +74,7 @@ for n in [
             if strippedLine.startswith("message ="):
                 str2 = strippedLine.strip(")]")
                 print();
-                str3 = str2.replace("\\n", "<br />")
+                str3 = str2.replace("\\n", "<br />").replace('",', '"')
                 print(str3.strip("message ="), end="")
                 print();
 
