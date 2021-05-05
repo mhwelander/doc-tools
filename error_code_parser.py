@@ -24,6 +24,10 @@ url4 = "https://raw.githubusercontent.com/prisma/prisma-engines/master/libs/user
 r4 = requests.get(url4, allow_redirects=True)
 open("introspection_engine.txt", "wb").write(r4.content)
 
+url5 = "https://raw.githubusercontent.com/prisma/prisma-engines/master/libs/datamodel/core/src/diagnostics/error.rs"
+r5 = requests.get(url5, allow_redirects=True)
+open("datamodelerrors.txt", "wb").write(r5.content)
+
 #    print(reg4)
 
 
@@ -31,7 +35,8 @@ for n in [
         ["common.txt", "Common"],
     ["query_engine.txt", "Prisma Client (Query Engine)"],
     ["migration_engine.txt", "Prisma Migrate (Migration Engine)"],
-    ["introspection_engine.txt", "<inlinecode>prisma db pull</inlinecode> (Introspection Engine)"],
+    ["introspection_engine.txt",
+        "<inlinecode>prisma db pull</inlinecode> (Introspection Engine)"],
 ]:
 
     print()
@@ -44,8 +49,10 @@ for n in [
 
         with open(n[0], "w") as sf5:
 
-            bleh = re.sub(r"((?:message = )[^\]]+)", removeSpaceAfterMessage, data)
-            blah = re.sub("\#\[user_facing\(code", "\#\[user_facing\(\ncode", bleh)
+            bleh = re.sub(r"((?:message = )[^\]]+)",
+                          removeSpaceAfterMessage, data)
+            blah = re.sub("\#\[user_facing\(code",
+                          "\#\[user_facing\(\ncode", bleh)
             bloh = re.sub(", message \= ", ",\nmessage = ", blah)
             blih = re.sub(
                 "\#\[user_facing\(message = ", "\#\[user_facing\(\nmessage = ", bloh
@@ -61,22 +68,40 @@ for n in [
 
         line = fp.readline()
         cnt = 1
+        printSuberrors = False
         while line:
             strippedLine = line.strip()
             if strippedLine.startswith("code ="):
                 str1 = strippedLine.strip('",')
                 str1 = str1.strip(")]")
                 str1 = str1.strip('";')
+                if "P1012" in str1:
+                    printSuberrors = True
                 print()
-                print("#### <inlinecode>" + str1.strip('code = "') + "</inlinecode>", end="")                
-                print();
+                print("#### <inlinecode>" + str1.strip('code = "') +
+                      "</inlinecode>", end="")
+                print()
 
             if strippedLine.startswith("message ="):
                 str2 = strippedLine.strip(")]")
-                print();
+                print()
                 str3 = str2.replace("\\n", "<br />").replace('",', '"')
                 print(str3.strip("message ="), end="")
-                print();
+                print()
+                if printSuberrors == True:
+                    # Sub-errors
+                    print();
+                    print("Possible errors:")
+                    print();
+                    with open("datamodelerrors.txt", "r") as sf6:
+                        line1 = sf6.readline()
+                        while line1:
+                            line1 = line1.strip();
+                            if line1.startswith("#[error("):
+                                formattedLine = line1.replace("#[error(", "").replace(")]", "").split('",')[0];
+                                print("* " + formattedLine + '"')                            
+                            line1 = sf6.readline()
+                printSuberrors = False
 
             # print("Line {}: {}".format(cnt, line.strip()))
             line = fp.readline()
