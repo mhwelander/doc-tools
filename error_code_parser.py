@@ -98,7 +98,7 @@ for n in [
                         while line1:
                             line1 = line1.strip();
                             if line1.startswith("#[error("):
-                                formattedLine = line1.replace("#[error(", "").replace(")]", "").split('",')[0];
+                                formattedLine = line1.replace("#[error(", "").replace(")]", "").replace('\\"', "`").split('",')[0];
                                 print("* " + formattedLine + '"')                            
                             line1 = sf6.readline()
                 printSuberrors = False
